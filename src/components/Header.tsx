@@ -15,47 +15,47 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         {/* Branding */}
         <Link
           href="/"
-          className="flex flex-col leading-tight"
+          className="flex min-w-0 flex-col leading-tight"
           onClick={() => setMobileOpen(false)}
         >
-          <span className="text-lg font-semibold tracking-tight text-teal-700 dark:text-teal-400">
+          <span className="truncate text-base font-semibold tracking-tight text-teal-700 sm:text-lg dark:text-teal-400">
             Dr. Adelyn Pereira
           </span>
-          <span className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+          <span className="truncate text-[0.65rem] font-medium uppercase tracking-wide text-zinc-500 sm:text-xs dark:text-zinc-400">
             Physiotherapy &amp; Rehabilitation
           </span>
         </Link>
 
         {/* Desktop navigation */}
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-5 lg:flex xl:gap-6">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-zinc-600 transition-colors hover:text-teal-700 dark:text-zinc-300 dark:hover:text-teal-400"
+              className="whitespace-nowrap text-sm font-medium text-zinc-600 transition-colors hover:text-teal-700 dark:text-zinc-300 dark:hover:text-teal-400"
             >
               {link.label}
             </Link>
           ))}
           <Link
             href="/book"
-            className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-teal-800"
+            className="whitespace-nowrap rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-teal-800"
           >
             Book Consultation
           </Link>
         </nav>
 
-        {/* Mobile menu toggle */}
+        {/* Mobile / tablet menu toggle */}
         <button
           type="button"
           aria-label="Toggle navigation menu"
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((open) => !open)}
-          className="inline-flex items-center justify-center rounded-md p-2 text-zinc-700 hover:bg-zinc-100 md:hidden dark:text-zinc-200 dark:hover:bg-zinc-800"
+          className="inline-flex shrink-0 items-center justify-center rounded-md p-2 text-zinc-700 hover:bg-zinc-100 lg:hidden dark:text-zinc-200 dark:hover:bg-zinc-800"
         >
           <svg
             className="h-6 w-6"
@@ -81,9 +81,9 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile menu panel */}
+      {/* Mobile / tablet menu panel */}
       {mobileOpen && (
-        <nav className="border-t border-zinc-200 bg-white px-4 py-4 md:hidden dark:border-zinc-800 dark:bg-zinc-950">
+        <nav className="border-t border-zinc-200 bg-white px-4 py-4 lg:hidden dark:border-zinc-800 dark:bg-zinc-950">
           <ul className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <li key={link.href}>
