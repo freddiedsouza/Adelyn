@@ -512,22 +512,56 @@ export default function BookingForm() {
                 <span className="font-normal text-zinc-400">(DD/MM/YYYY)</span>{" "}
                 <span className="text-red-600">*</span>
               </label>
-              <input
-                id="booking-date"
-                type="text"
-                inputMode="numeric"
-                autoComplete="off"
-                placeholder="DD/MM/YYYY"
-                maxLength={10}
-                value={date}
-                onChange={(event) => {
-                  setDate(maskDmy(event.target.value));
-                  clearError("date");
-                }}
-                aria-invalid={Boolean(errors.date)}
-                aria-describedby={errors.date ? "error-date" : undefined}
-                className={`${inputClass(Boolean(errors.date))} sm:max-w-xs`}
-              />
+              <div className="relative sm:max-w-xs">
+                <input
+                  id="booking-date"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  placeholder="DD/MM/YYYY"
+                  maxLength={10}
+                  value={date}
+                  onChange={(event) => {
+                    setDate(maskDmy(event.target.value));
+                    clearError("date");
+                  }}
+                  aria-invalid={Boolean(errors.date)}
+                  aria-describedby={errors.date ? "error-date" : undefined}
+                  className={`${inputClass(Boolean(errors.date))} pr-11`}
+                />
+                <span
+                  className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-zinc-500 dark:text-zinc-400"
+                  aria-hidden="true"
+                >
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0V11.25A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+                    />
+                  </svg>
+                </span>
+                <input
+                  type="date"
+                  aria-label="Pick a date from the calendar"
+                  tabIndex={-1}
+                  min={minDate}
+                  value={dmyToIso(date)}
+                  onClick={(event) => event.currentTarget.showPicker?.()}
+                  onChange={(event) => {
+                    const iso = event.target.value;
+                    setDate(iso ? isoToDmy(iso) : "");
+                    clearError("date");
+                  }}
+                  className="absolute inset-y-0 right-0 w-11 cursor-pointer opacity-0"
+                />
+              </div>
               <p className="text-xs text-zinc-400 dark:text-zinc-500">
                 Earliest date: {isoToDmy(minDate)}
               </p>
