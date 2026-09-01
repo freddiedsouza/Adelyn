@@ -1,15 +1,15 @@
 import Link from "next/link";
 
-/*
-  Address, phone, and email below are placeholders — replace with Dr. Adelyn
-  Pereira's real clinic contact details before launch.
-*/
 const clinic = {
-  name: "Adelyn Physiotherapy Clinic",
-  addressLines: ["Building 000, Al Sadd Street", "Doha, Qatar"],
-  phoneDisplay: "+974 4012 3456",
-  phoneHref: "tel:+97440123456",
-  email: "reception@adelynphysio.qa",
+  name: "Dr. Adelyn Pereira — Physiotherapy",
+  addressLines: [
+    "Pereira Compound, Near Marve Beach",
+    "Marve Road, Malad (West)",
+    "Mumbai 400095",
+  ],
+  phoneDisplay: "+91 99208 36637",
+  phoneHref: "tel:+919920836637",
+  email: "adelynpereira@gmail.com",
 };
 
 const quickNav = [
@@ -45,8 +45,8 @@ const serviceLinks = [
 ];
 
 const affiliations = [
-  "Qatar Council for Healthcare Practitioners (QCHP)",
-  "Musculoskeletal Association of Chartered Physiotherapists (MACP)",
+  "Indian Association of Physiotherapists (IAP)",
+  "Maharashtra State O.T. & P.T. Council",
 ];
 
 export default function Footer() {
@@ -147,8 +147,8 @@ export default function Footer() {
               <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
                 Operating hours
               </p>
-              <p className="mt-2 text-sm">Sun–Thu: 8:00 AM – 7:00 PM</p>
-              <p className="text-sm">Fri–Sat: By Appointment</p>
+              <p className="mt-2 text-sm">Monday – Saturday: 9:00 AM – 7:00 PM</p>
+              <p className="text-sm">Sunday: Closed</p>
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@ export default function Footer() {
       <div className="border-t border-zinc-800">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-4 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <p>&copy; {year} Dr. Adelyn Pereira. All rights reserved.</p>
-          <p>Clinical physiotherapy &amp; rehabilitation · Doha, Qatar</p>
+          <p>Clinical physiotherapy &amp; rehabilitation · Mumbai, India</p>
         </div>
       </div>
     </footer>

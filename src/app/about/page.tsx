@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 */
 const credentials = [
   "Doctor of Physiotherapy (DPT)",
-  "BSc (Hons) Physiotherapy",
-  "Licensed Physiotherapist — Qatar Council for Healthcare Practitioners (QCHP), Reg. No. PT-000000",
+  "Bachelor of Physiotherapy (BPT)",
+  "Registered Physiotherapist — Maharashtra State O.T. & P.T. Council, Reg. No. PT-00000",
   "Certified Dry Needling Practitioner (Level 2)",
-  "Member, Musculoskeletal Association of Chartered Physiotherapists (MACP)",
+  "Member, Indian Association of Physiotherapists (IAP)",
 ];
 
 const qatarHighlights = [

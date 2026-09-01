@@ -798,7 +798,7 @@ export default function BookingForm() {
                   type="tel"
                   inputMode="tel"
                   autoComplete="tel"
-                  placeholder="+974 3312 3456"
+                  placeholder="+91 98765 43210"
                   value={phone}
                   onChange={(event) => {
                     setPhone(event.target.value);
