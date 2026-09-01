@@ -41,16 +41,11 @@ function generateReference(): string {
   return `AP-${out}`;
 }
 
+/** Formats an ISO date (YYYY-MM-DD) as DD/MM/YYYY. */
 function formatDate(iso: string): string {
-  if (!iso) return "";
-  const parsed = new Date(`${iso}T00:00:00`);
-  if (Number.isNaN(parsed.getTime())) return "";
-  return parsed.toLocaleDateString("en-GB", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const [year, month, day] = iso.split("-");
+  if (!year || !month || !day) return "";
+  return `${day}/${month}/${year}`;
 }
 
 function modeLabel(mode: ConsultationMode | ""): string {
@@ -482,7 +477,9 @@ export default function BookingForm() {
                 htmlFor="booking-date"
                 className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
               >
-                Preferred date <span className="text-red-600">*</span>
+                Preferred date{" "}
+                <span className="font-normal text-zinc-400">(DD/MM/YYYY)</span>{" "}
+                <span className="text-red-600">*</span>
               </label>
               <input
                 id="booking-date"
@@ -497,6 +494,11 @@ export default function BookingForm() {
                 aria-describedby={errors.date ? "error-date" : undefined}
                 className={`${inputClass(Boolean(errors.date))} sm:max-w-xs`}
               />
+              {date && !errors.date ? (
+                <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                  Selected: {formatDate(date)}
+                </p>
+              ) : null}
               <FieldError id="error-date" message={errors.date} />
             </div>
 
