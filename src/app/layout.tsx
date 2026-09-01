@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import Header from "@/components/Header";
 import DevViewportSwitcher from "@/components/DevViewportSwitcher";
@@ -20,16 +21,26 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const content = (
+    <>
+      <Header />
+      {children}
+    </>
+  );
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <DevViewportSwitcher>
-          <Header />
-          {children}
-        </DevViewportSwitcher>
+        {process.env.NODE_ENV === "development" ? (
+          <Suspense fallback={content}>
+            <DevViewportSwitcher>{content}</DevViewportSwitcher>
+          </Suspense>
+        ) : (
+          content
+        )}
       </body>
     </html>
   );

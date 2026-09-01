@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 type ViewportPreset = "mobile" | "tablet" | "laptop" | "desktop";
 
@@ -11,15 +12,20 @@ const PRESETS: { id: ViewportPreset; label: string; width: number | null }[] = [
   { id: "desktop", label: "Desktop", width: null },
 ];
 
+/** Marks the request as the inner preview so the chrome is not rendered twice. */
+const PREVIEW_FLAG = "__vp";
+
 export default function DevViewportSwitcher({
   children,
 }: {
   children: ReactNode;
 }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [preset, setPreset] = useState<ViewportPreset>("desktop");
 
-  // Compiled out of production bundles by the constant folding of NODE_ENV.
-  if (process.env.NODE_ENV !== "development") {
+  // Rendered inside the preview iframe: show the real app with no switcher.
+  if (searchParams.get(PREVIEW_FLAG) !== null) {
     return <>{children}</>;
   }
 
@@ -27,23 +33,25 @@ export default function DevViewportSwitcher({
     PRESETS.find((entry) => entry.id === preset) ?? PRESETS[PRESETS.length - 1];
   const framed = active.width !== null;
 
+  const passthroughQuery = new URLSearchParams(searchParams.toString());
+  passthroughQuery.set(PREVIEW_FLAG, "1");
+  const previewSrc = `${pathname}?${passthroughQuery.toString()}`;
+
   return (
-    <>
-      <div className="flex w-full justify-center bg-zinc-100 pb-24 dark:bg-zinc-800">
-        <div
+    <div className="flex min-h-screen w-full flex-col bg-zinc-200 dark:bg-zinc-800">
+      <div className="flex flex-1 justify-center overflow-hidden p-4 pb-24">
+        <iframe
+          key={previewSrc}
+          src={previewSrc}
+          title="Responsive preview"
           className={[
-            "min-h-screen w-full bg-[var(--background)] text-[var(--foreground)] transition-[width] duration-300 ease-in-out",
+            "h-full w-full border-0 bg-[var(--background)] transition-[max-width] duration-300 ease-in-out",
             framed
-              ? "my-6 overflow-hidden rounded-xl shadow-2xl ring-1 ring-black/10 dark:ring-white/10"
+              ? "rounded-xl shadow-2xl ring-1 ring-black/10 dark:ring-white/10"
               : "",
           ].join(" ")}
-          style={{
-            width: active.width ? `${active.width}px` : "100%",
-            maxWidth: "100%",
-          }}
-        >
-          {children}
-        </div>
+          style={{ maxWidth: active.width ? `${active.width}px` : "100%" }}
+        />
       </div>
 
       <div className="fixed bottom-4 left-1/2 z-[100] -translate-x-1/2">
@@ -77,6 +85,6 @@ export default function DevViewportSwitcher({
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 }
