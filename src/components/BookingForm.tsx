@@ -41,11 +41,37 @@ function generateReference(): string {
   return `AP-${out}`;
 }
 
-/** Formats an ISO date (YYYY-MM-DD) as DD/MM/YYYY. */
-function formatDate(iso: string): string {
+/** ISO date (YYYY-MM-DD) -> "DD/MM/YYYY". */
+function isoToDmy(iso: string): string {
   const [year, month, day] = iso.split("-");
   if (!year || !month || !day) return "";
   return `${day}/${month}/${year}`;
+}
+
+/** "DD/MM/YYYY" -> ISO "YYYY-MM-DD", or "" when it is not a real calendar date. */
+function dmyToIso(dmy: string): string {
+  const match = dmy.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!match) return "";
+  const [, dd, mm, yyyy] = match;
+  const day = Number(dd);
+  const month = Number(mm);
+  const year = Number(yyyy);
+  const probe = new Date(year, month - 1, day);
+  if (
+    probe.getFullYear() !== year ||
+    probe.getMonth() !== month - 1 ||
+    probe.getDate() !== day
+  ) {
+    return "";
+  }
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+/** Progressively formats digits as the user types: 15092026 -> 15/09/2026. */
+function maskDmy(input: string): string {
+  const digits = input.replace(/\D/g, "").slice(0, 8);
+  const parts = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 8)];
+  return parts.filter(Boolean).join("/");
 }
 
 function modeLabel(mode: ConsultationMode | ""): string {
@@ -149,8 +175,13 @@ export default function BookingForm() {
     const next: Record<string, string> = {};
     if (!serviceId) next.serviceId = "Please choose a service.";
     if (!mode) next.mode = "Please choose a consultation mode.";
-    if (!date) next.date = "Please choose a preferred date.";
-    else if (date < minDate) next.date = "Please choose a date in the future.";
+    if (!date.trim()) {
+      next.date = "Please choose a preferred date.";
+    } else {
+      const iso = dmyToIso(date);
+      if (!iso) next.date = "Enter the date as DD/MM/YYYY.";
+      else if (iso < minDate) next.date = "Please choose a date today or later.";
+    }
     if (!slot) next.slot = "Please choose a time slot.";
     if (!fullName.trim()) next.fullName = "Full name is required.";
     const digits = phone.replace(/\D/g, "");
@@ -175,7 +206,7 @@ export default function BookingForm() {
       reference: generateReference(),
       serviceTitle: selectedService?.title ?? "",
       mode: mode as ConsultationMode,
-      dateLabel: formatDate(date),
+      dateLabel: date,
       slot,
       fullName: fullName.trim(),
       phone: phone.trim(),
@@ -483,22 +514,23 @@ export default function BookingForm() {
               </label>
               <input
                 id="booking-date"
-                type="date"
-                min={minDate}
+                type="text"
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="DD/MM/YYYY"
+                maxLength={10}
                 value={date}
                 onChange={(event) => {
-                  setDate(event.target.value);
+                  setDate(maskDmy(event.target.value));
                   clearError("date");
                 }}
                 aria-invalid={Boolean(errors.date)}
                 aria-describedby={errors.date ? "error-date" : undefined}
                 className={`${inputClass(Boolean(errors.date))} sm:max-w-xs`}
               />
-              {date && !errors.date ? (
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Selected: {formatDate(date)}
-                </p>
-              ) : null}
+              <p className="text-xs text-zinc-400 dark:text-zinc-500">
+                Earliest date: {isoToDmy(minDate)}
+              </p>
               <FieldError id="error-date" message={errors.date} />
             </div>
 
@@ -720,7 +752,10 @@ export default function BookingForm() {
                 value={selectedService?.title ?? ""}
               />
               <SummaryRow label="Consultation" value={modeLabel(mode)} />
-              <SummaryRow label="Date" value={formatDate(date)} />
+              <SummaryRow
+                label="Date"
+                value={dmyToIso(date) ? date : ""}
+              />
               <SummaryRow label="Time slot" value={slot} />
             </dl>
             <p className="mt-4 border-t border-zinc-200 pt-4 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
