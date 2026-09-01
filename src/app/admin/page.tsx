@@ -22,8 +22,9 @@ export default function AdminPage() {
         </div>
 
         <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200">
-          Demo view — this dashboard uses sample data and is not yet behind
-          authentication. Status changes are kept in the browser only.
+          Demo view — not yet behind authentication. New bookings and status
+          changes are saved in server memory and persist until the server
+          restarts.
         </p>
 
         <div className="mt-8">

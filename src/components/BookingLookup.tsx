@@ -2,60 +2,21 @@
 
 import type { FormEvent } from "react";
 import { useState } from "react";
-import { services } from "@/data/services";
+import type { Appointment, AppointmentStatus } from "@/types/appointment";
+import { formatAppointmentDate, modeLabel } from "@/lib/appointments";
 
 const REFERENCE_RE = /^AP-[A-Za-z0-9]{4}$/;
-const STATUSES = ["Confirmed", "Upcoming", "Past"] as const;
-type LookupStatus = (typeof STATUSES)[number];
 
-interface LookupResult {
-  reference: string;
-  status: LookupStatus;
-  serviceTitle: string;
-  mode: string;
-  slot: string;
-  dateLabel: string;
-}
-
-const SLOTS = ["09:00 AM", "10:30 AM", "02:00 PM", "03:30 PM"];
-
-function simulateLookup(rawReference: string): LookupResult {
-  const reference = rawReference.toUpperCase();
-  const key = reference.replace("AP-", "");
-  const sum = [...key].reduce((acc, char) => acc + char.charCodeAt(0), 0);
-
-  const status = STATUSES[sum % STATUSES.length];
-  const service = services[sum % services.length];
-  const mode =
-    sum % 2 === 0 ? "In-Person Clinic Visit" : "Virtual Consultation";
-  const slot = SLOTS[sum % SLOTS.length];
-
-  const dayOffset = status === "Past" ? -(3 + (sum % 20)) : 2 + (sum % 14);
-  const appointmentDate = new Date();
-  appointmentDate.setDate(appointmentDate.getDate() + dayOffset);
-  const dateLabel = appointmentDate.toLocaleDateString("en-GB", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  return {
-    reference,
-    status,
-    serviceTitle: service.title,
-    mode,
-    slot,
-    dateLabel,
-  };
-}
-
-function statusBadgeClass(status: LookupStatus): string {
+function statusBadgeClass(status: AppointmentStatus): string {
   switch (status) {
     case "Confirmed":
       return "bg-teal-100 text-teal-800 dark:bg-teal-950 dark:text-teal-300";
-    case "Upcoming":
+    case "Completed":
+      return "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300";
+    case "Rescheduled":
       return "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300";
+    case "Cancelled":
+      return "bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300";
     default:
       return "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300";
   }
@@ -75,11 +36,12 @@ function DetailRow({ label, value }: { label: string; value: string }) {
 export default function BookingLookup() {
   const [reference, setReference] = useState("");
   const [error, setError] = useState("");
-  const [result, setResult] = useState<LookupResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<Appointment | null>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const trimmed = reference.trim();
+    const trimmed = reference.trim().toUpperCase();
 
     if (!trimmed) {
       setError("Enter your booking reference.");
@@ -93,7 +55,32 @@ export default function BookingLookup() {
     }
 
     setError("");
-    setResult(simulateLookup(trimmed));
+    setResult(null);
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `/api/bookings/lookup?ref=${encodeURIComponent(trimmed)}`,
+      );
+      const data = (await response.json()) as {
+        appointment?: Appointment;
+        error?: string;
+      };
+
+      if (response.status === 404) {
+        setError("No appointment found for that reference.");
+        return;
+      }
+      if (!response.ok || !data.appointment) {
+        setError(data.error ?? "Could not complete the lookup. Please retry.");
+        return;
+      }
+      setResult(data.appointment);
+    } catch {
+      setError("Could not reach the lookup service. Check your connection.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -105,7 +92,11 @@ export default function BookingLookup() {
         Check the status of an appointment using its booking reference.
       </p>
 
-      <form onSubmit={handleSubmit} noValidate className="mt-4 flex flex-col gap-3 sm:flex-row">
+      <form
+        onSubmit={handleSubmit}
+        noValidate
+        className="mt-4 flex flex-col gap-3 sm:flex-row"
+      >
         <div className="flex-1">
           <label htmlFor="lookup-reference" className="sr-only">
             Booking reference
@@ -132,20 +123,23 @@ export default function BookingLookup() {
         </div>
         <button
           type="submit"
-          className="inline-flex items-center justify-center rounded-full bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-800"
+          disabled={loading}
+          className="inline-flex items-center justify-center rounded-full bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Look up
+          {loading ? "Checking…" : "Look up"}
         </button>
       </form>
 
       {error ? (
-        <p id="lookup-error" className="mt-2 text-sm text-red-600 dark:text-red-400">
+        <p
+          id="lookup-error"
+          className="mt-2 text-sm text-red-600 dark:text-red-400"
+        >
           {error}
         </p>
       ) : (
         <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
-          Demo lookup — any reference in the form AP-XXXX will return a sample
-          status.
+          Enter the AP- reference from your booking confirmation.
         </p>
       )}
 
@@ -153,7 +147,7 @@ export default function BookingLookup() {
         <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-950">
           <div className="flex items-center justify-between gap-3">
             <span className="font-semibold tracking-wide text-zinc-900 dark:text-zinc-100">
-              {result.reference}
+              {result.id}
             </span>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${statusBadgeClass(
@@ -165,10 +159,17 @@ export default function BookingLookup() {
           </div>
           <dl className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <DetailRow label="Practitioner" value="Dr. Adelyn Pereira" />
+            <DetailRow label="Patient" value={result.patientName} />
             <DetailRow label="Service" value={result.serviceTitle} />
-            <DetailRow label="Date" value={result.dateLabel} />
-            <DetailRow label="Time slot" value={result.slot} />
-            <DetailRow label="Consultation type" value={result.mode} />
+            <DetailRow
+              label="Date"
+              value={formatAppointmentDate(result.date)}
+            />
+            <DetailRow label="Time slot" value={result.time} />
+            <DetailRow
+              label="Consultation type"
+              value={modeLabel(result.mode)}
+            />
           </dl>
         </div>
       ) : null}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { appointments as seedAppointments } from "@/data/appointments";
 import type { Appointment, AppointmentStatus } from "@/types/appointment";
 import {
@@ -42,6 +42,7 @@ function StatusBadge({ status }: { status: AppointmentStatus }) {
 export default function AdminScheduleTable() {
   const [appointments, setAppointments] =
     useState<Appointment[]>(seedAppointments);
+  const [syncError, setSyncError] = useState("");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<AppointmentStatus | "all">(
     "all",
@@ -49,6 +50,28 @@ export default function AdminScheduleTable() {
   const [dateFilter, setDateFilter] = useState("");
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [notesId, setNotesId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const response = await fetch("/api/bookings");
+        const data = (await response.json()) as {
+          appointments?: Appointment[];
+        };
+        if (!cancelled && response.ok && data.appointments) {
+          setAppointments(data.appointments);
+        }
+      } catch {
+        if (!cancelled) {
+          setSyncError("Could not load the latest appointments from the server.");
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const metrics = useMemo(() => {
     return {
@@ -80,11 +103,36 @@ export default function AdminScheduleTable() {
     });
   }, [appointments, query, statusFilter, dateFilter]);
 
-  function updateStatus(id: string, status: AppointmentStatus) {
+  async function updateStatus(id: string, status: AppointmentStatus) {
+    setOpenMenuId(null);
+    setSyncError("");
+
+    const previous = appointments;
+    // optimistic update
     setAppointments((prev) =>
       prev.map((item) => (item.id === id ? { ...item, status } : item)),
     );
-    setOpenMenuId(null);
+
+    try {
+      const response = await fetch(`/api/bookings/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      const data = (await response.json()) as {
+        appointment?: Appointment;
+        error?: string;
+      };
+      if (!response.ok || !data.appointment) {
+        throw new Error(data.error ?? "Update failed.");
+      }
+      setAppointments((prev) =>
+        prev.map((item) => (item.id === id ? data.appointment! : item)),
+      );
+    } catch {
+      setAppointments(previous); // roll back
+      setSyncError("Could not save the status change. Please try again.");
+    }
   }
 
   function clearFilters() {
@@ -107,6 +155,15 @@ export default function AdminScheduleTable() {
         inPerson={metrics.inPerson}
         virtual={metrics.virtual}
       />
+
+      {syncError ? (
+        <p
+          role="alert"
+          className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300"
+        >
+          {syncError}
+        </p>
+      ) : null}
 
       {/* Filters */}
       <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 sm:flex-row sm:flex-wrap sm:items-end dark:border-zinc-800 dark:bg-zinc-900">

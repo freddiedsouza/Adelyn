@@ -18,7 +18,6 @@ const MORNING_SLOTS = ["09:00 AM", "09:45 AM", "10:30 AM", "11:15 AM"];
 const AFTERNOON_SLOTS = ["02:00 PM", "02:45 PM", "03:30 PM", "04:15 PM"];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const REFERENCE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 interface Confirmation {
   reference: string;
@@ -41,13 +40,6 @@ function todayIso(): string {
   return new Date(now.getTime() - tzOffset).toISOString().split("T")[0];
 }
 
-function generateReference(): string {
-  let out = "";
-  for (let i = 0; i < 4; i += 1) {
-    out += REFERENCE_CHARS[Math.floor(Math.random() * REFERENCE_CHARS.length)];
-  }
-  return `AP-${out}`;
-}
 
 /** ISO date (YYYY-MM-DD) -> "DD/MM/YYYY". */
 function isoToDmy(iso: string): string {
@@ -168,6 +160,8 @@ export default function BookingForm() {
   const [history, setHistory] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const minDate = todayIso();
   const selectedService =
@@ -219,29 +213,78 @@ export default function BookingForm() {
     return next;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const found = validate();
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
-    setConfirmation({
-      reference: generateReference(),
-      serviceTitle: selectedService?.title ?? "",
-      mode: mode as ConsultationMode,
-      dateLabel: date,
-      slot,
-      fullName: fullName.trim(),
-      phone: phone.trim(),
-      email: email.trim(),
-      complaint: complaint.trim(),
-      history: history.trim(),
-      priceSummary: resolvedPrice?.summary ?? "",
-      visitTypeLabel,
-    });
+    setSubmitting(true);
+    setSubmitError("");
 
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceId,
+          mode,
+          date: dmyToIso(date),
+          time: slot,
+          fullName: fullName.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          chiefComplaint: complaint.trim(),
+          medicalHistory: history.trim(),
+        }),
+      });
+      const payload = (await response.json()) as {
+        appointment?: {
+          id: string;
+          serviceTitle: string;
+          mode: ConsultationMode;
+          time: string;
+          patientName: string;
+          phone: string;
+          email: string;
+          chiefComplaint: string;
+          medicalHistory: string;
+        };
+        error?: string;
+      };
+
+      if (!response.ok || !payload.appointment) {
+        setSubmitError(
+          payload.error ?? "Something went wrong. Please try again.",
+        );
+        return;
+      }
+
+      const appointment = payload.appointment;
+      setConfirmation({
+        reference: appointment.id,
+        serviceTitle: appointment.serviceTitle,
+        mode: appointment.mode,
+        dateLabel: date,
+        slot: appointment.time,
+        fullName: appointment.patientName,
+        phone: appointment.phone,
+        email: appointment.email,
+        complaint: appointment.chiefComplaint,
+        history: appointment.medicalHistory,
+        priceSummary: resolvedPrice?.summary ?? "",
+        visitTypeLabel,
+      });
+
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    } catch {
+      setSubmitError(
+        "Could not reach the booking service. Check your connection and try again.",
+      );
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -259,6 +302,7 @@ export default function BookingForm() {
     setComplaint("");
     setHistory("");
     setErrors({});
+    setSubmitError("");
     setConfirmation(null);
   }
 
@@ -887,11 +931,21 @@ export default function BookingForm() {
             </p>
           ) : null}
 
+          {submitError ? (
+            <p
+              role="alert"
+              className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300"
+            >
+              {submitError}
+            </p>
+          ) : null}
+
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-800 sm:w-auto"
+            disabled={submitting}
+            className="inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
           >
-            Request Appointment
+            {submitting ? "Submitting…" : "Request Appointment"}
           </button>
         </form>
 
