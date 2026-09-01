@@ -5,6 +5,8 @@ export type ServiceIconId =
   | "spine"
   | "posture";
 
+export type ServiceMode = "in-person" | "virtual";
+
 export interface ClinicalService {
   /** URL-safe identifier, used for booking deep-links (`/book?service=<id>`). */
   id: string;
@@ -18,6 +20,10 @@ export interface ClinicalService {
   rateIndicator: string;
   /** Conditions this service commonly treats. */
   targetConditions: string[];
+  /** Consultation modes this service is offered in. */
+  modes: ServiceMode[];
+  /** Ordered treatment methodology steps, shown on the dedicated services page. */
+  methodology: string[];
   /** Icon identifier resolved by the Services component. */
   icon: ServiceIconId;
 }
