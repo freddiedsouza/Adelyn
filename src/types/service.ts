@@ -16,8 +16,6 @@ export interface ClinicalService {
   description: string;
   /** Typical length of a single session, e.g. "45 mins". */
   sessionDuration: string;
-  /** Human-readable price / rate indicator, e.g. "From QAR 250 / session". */
-  rateIndicator: string;
   /** Conditions this service commonly treats. */
   targetConditions: string[];
   /** Consultation modes this service is offered in. */

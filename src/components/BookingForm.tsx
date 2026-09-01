@@ -5,8 +5,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { services } from "@/data/services";
+import {
+  getPackageRules,
+  priceFrom,
+  resolveServicePrice,
+} from "@/lib/pricing";
 
 type ConsultationMode = "in-person" | "virtual";
+type VisitType = "new" | "follow-up";
 
 const MORNING_SLOTS = ["09:00 AM", "09:45 AM", "10:30 AM", "11:15 AM"];
 const AFTERNOON_SLOTS = ["02:00 PM", "02:45 PM", "03:30 PM", "04:15 PM"];
@@ -20,6 +26,8 @@ interface Confirmation {
   mode: ConsultationMode;
   dateLabel: string;
   slot: string;
+  priceSummary: string;
+  visitTypeLabel: string;
   fullName: string;
   phone: string;
   email: string;
@@ -148,6 +156,9 @@ export default function BookingForm() {
     services.some((service) => service.id === preselected) ? preselected : "",
   );
   const [mode, setMode] = useState<ConsultationMode | "">("");
+  const [visitType, setVisitType] = useState<VisitType>("new");
+  const [packageId, setPackageId] = useState("");
+  const [promoCode, setPromoCode] = useState("");
   const [date, setDate] = useState("");
   const [slot, setSlot] = useState("");
   const [fullName, setFullName] = useState("");
@@ -161,6 +172,18 @@ export default function BookingForm() {
   const minDate = todayIso();
   const selectedService =
     services.find((service) => service.id === serviceId) ?? null;
+
+  const packageOptions = serviceId ? getPackageRules(serviceId) : [];
+  const resolvedPrice = serviceId
+    ? resolveServicePrice(serviceId, {
+        mode: mode || undefined,
+        visitType,
+        packageId: packageId || undefined,
+        promoCode: promoCode.trim() || undefined,
+      })
+    : null;
+  const visitTypeLabel =
+    visitType === "follow-up" ? "Follow-up session" : "New patient";
 
   function clearError(key: string) {
     setErrors((prev) => {
@@ -213,6 +236,8 @@ export default function BookingForm() {
       email: email.trim(),
       complaint: complaint.trim(),
       history: history.trim(),
+      priceSummary: resolvedPrice?.summary ?? "",
+      visitTypeLabel,
     });
 
     if (typeof window !== "undefined") {
@@ -223,6 +248,9 @@ export default function BookingForm() {
   function handleReset() {
     setServiceId("");
     setMode("");
+    setVisitType("new");
+    setPackageId("");
+    setPromoCode("");
     setDate("");
     setSlot("");
     setFullName("");
@@ -283,6 +311,8 @@ export default function BookingForm() {
               label="Consultation type"
               value={modeLabel(confirmation.mode)}
             />
+            <SummaryRow label="Visit type" value={confirmation.visitTypeLabel} />
+            <SummaryRow label="Price" value={confirmation.priceSummary} />
           </dl>
 
           <div className="mt-6 border-t border-zinc-200 pt-6 dark:border-zinc-800">
@@ -420,7 +450,7 @@ export default function BookingForm() {
                         {service.title}
                       </span>
                       <span className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-                        {service.sessionDuration} · {service.rateIndicator}
+                        {service.sessionDuration} · {priceFrom(service.id)}
                       </span>
                     </span>
                   </label>
@@ -428,6 +458,98 @@ export default function BookingForm() {
               })}
             </div>
             <FieldError id="error-serviceId" message={errors.serviceId} />
+
+            {serviceId ? (
+              <div className="mt-5 flex flex-col gap-4 border-t border-zinc-200 pt-5 dark:border-zinc-800">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                    Visit type
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {(
+                      [
+                        { value: "new" as const, label: "New patient" },
+                        { value: "follow-up" as const, label: "Follow-up" },
+                      ]
+                    ).map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        aria-pressed={visitType === option.value}
+                        onClick={() => setVisitType(option.value)}
+                        className={[
+                          "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                          visitType === option.value
+                            ? "border-teal-600 bg-teal-700 text-white"
+                            : "border-zinc-300 bg-white text-zinc-700 hover:border-teal-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200",
+                        ].join(" ")}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {packageOptions.length > 0 ? (
+                  <div className="flex flex-col gap-1.5">
+                    <label
+                      htmlFor="booking-package"
+                      className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                    >
+                      Session package
+                    </label>
+                    <select
+                      id="booking-package"
+                      value={packageId}
+                      onChange={(event) => setPackageId(event.target.value)}
+                      className={inputClass(false)}
+                    >
+                      <option value="">Single session</option>
+                      {packageOptions.map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : null}
+
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="booking-promo"
+                    className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                  >
+                    Promo code{" "}
+                    <span className="font-normal text-zinc-400">(optional)</span>
+                  </label>
+                  <input
+                    id="booking-promo"
+                    type="text"
+                    autoComplete="off"
+                    value={promoCode}
+                    onChange={(event) => setPromoCode(event.target.value)}
+                    placeholder="e.g. WELCOME10"
+                    className={`${inputClass(false)} uppercase placeholder:normal-case sm:max-w-xs`}
+                  />
+                </div>
+
+                {resolvedPrice ? (
+                  <div className="rounded-xl bg-teal-50 px-4 py-3 dark:bg-teal-950">
+                    <p className="text-xs font-medium uppercase tracking-wide text-teal-700 dark:text-teal-300">
+                      Estimated price
+                    </p>
+                    <p className="mt-1 text-lg font-semibold text-teal-800 dark:text-teal-200">
+                      {resolvedPrice.summary}
+                    </p>
+                    {resolvedPrice.applied.length > 0 ? (
+                      <p className="mt-1 text-xs text-teal-700 dark:text-teal-300">
+                        Applied: {resolvedPrice.applied.join(", ")}
+                      </p>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
           </fieldset>
 
           {/* Step 2 — Consultation mode */}
@@ -787,10 +909,18 @@ export default function BookingForm() {
               />
               <SummaryRow label="Consultation" value={modeLabel(mode)} />
               <SummaryRow
+                label="Visit type"
+                value={serviceId ? visitTypeLabel : ""}
+              />
+              <SummaryRow
                 label="Date"
                 value={dmyToIso(date) ? date : ""}
               />
               <SummaryRow label="Time slot" value={slot} />
+              <SummaryRow
+                label="Estimated price"
+                value={resolvedPrice?.summary ?? ""}
+              />
             </dl>
             <p className="mt-4 border-t border-zinc-200 pt-4 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
               You&apos;ll receive a booking reference and confirmation details

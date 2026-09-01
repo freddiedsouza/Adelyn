@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { services } from "@/data/services";
+import { priceFrom } from "@/lib/pricing";
 import type { ServiceIconId } from "@/types/service";
 
 const iconPaths: Record<ServiceIconId, string> = {
@@ -104,7 +105,7 @@ export default function Services() {
 
               <div className="mt-6 flex flex-1 flex-col justify-end">
                 <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                  {service.rateIndicator}
+                  {priceFrom(service.id)}
                 </p>
                 <Link
                   href={`/book?service=${service.id}`}

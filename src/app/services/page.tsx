@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { services } from "@/data/services";
+import { priceFrom } from "@/lib/pricing";
 import type { ServiceMode } from "@/types/service";
 
 export const metadata: Metadata = {
@@ -140,7 +141,7 @@ export default function ServicesPage() {
                       <div className="flex justify-between gap-3">
                         <dt className="text-zinc-500 dark:text-zinc-400">Rate</dt>
                         <dd className="text-right font-medium text-zinc-900 dark:text-zinc-100">
-                          {service.rateIndicator}
+                          {priceFrom(service.id)}
                         </dd>
                       </div>
                       <div className="flex items-start justify-between gap-3">
