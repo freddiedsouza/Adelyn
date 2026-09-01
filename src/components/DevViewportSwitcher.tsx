@@ -38,8 +38,8 @@ export default function DevViewportSwitcher({
   const previewSrc = `${pathname}?${passthroughQuery.toString()}`;
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-zinc-200 dark:bg-zinc-800">
-      <div className="flex flex-1 justify-center overflow-hidden p-4 pb-24">
+    <div className="flex h-dvh w-full flex-col bg-zinc-200 dark:bg-zinc-800">
+      <div className="flex min-h-0 flex-1 justify-center overflow-hidden p-4 pb-24">
         <iframe
           key={previewSrc}
           src={previewSrc}
