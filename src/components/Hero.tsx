@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const trustIndicators = [
@@ -68,26 +69,20 @@ export default function Hero() {
         {/* Visual column */}
         <div className="relative w-full">
           <div className="absolute -inset-3 rounded-3xl border border-teal-100 dark:border-teal-900" aria-hidden="true" />
-          <div className="relative flex aspect-[4/5] w-full items-center justify-center rounded-2xl border-2 border-teal-200 bg-zinc-100 ring-1 ring-inset ring-white dark:border-teal-800 dark:bg-zinc-900 dark:ring-zinc-800">
-            <div className="flex flex-col items-center gap-2 px-6 text-center">
-              <svg
-                className="h-12 w-12 text-teal-600 dark:text-teal-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.25a7.5 7.5 0 0 1 15 0v.75H4.5v-.75Z"
-                />
-              </svg>
-              <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                Portrait of Dr. Adelyn Pereira
-              </span>
-            </div>
+          {/*
+            Placeholder portrait — royalty-free stock photo from Unsplash
+            (https://images.unsplash.com/photo-1594824476967-48c8b964273f).
+            Replace public/adelyn-portrait.jpg with Dr. Adelyn Pereira's own photo.
+          */}
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border-2 border-teal-200 bg-zinc-100 ring-1 ring-inset ring-white dark:border-teal-800 dark:bg-zinc-900 dark:ring-zinc-800">
+            <Image
+              src="/adelyn-portrait.jpg"
+              alt="Dr. Adelyn Pereira, clinical physiotherapist"
+              fill
+              priority
+              sizes="(min-width: 1024px) 40vw, (min-width: 768px) 60vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </div>
