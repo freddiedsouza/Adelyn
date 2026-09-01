@@ -19,6 +19,7 @@ const quickNav = [
   { href: "/about", label: "About" },
   { href: "/book", label: "Book Appointment" },
   { href: "/portal", label: "Patient Portal" },
+  { href: "/contact", label: "Contact" },
   { href: "/admin", label: "Admin" },
 ];
 

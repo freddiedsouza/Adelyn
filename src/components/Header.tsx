@@ -5,9 +5,10 @@ import { useState } from "react";
 
 const navLinks = [
   { href: "/services", label: "Services" },
-  { href: "/about", label: "About Dr. Adelyn" },
+  { href: "/about", label: "About" },
   { href: "/book", label: "Book Appointment" },
-  { href: "/portal", label: "Patient Portal / Chat" },
+  { href: "/portal", label: "Patient Portal" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Header() {
