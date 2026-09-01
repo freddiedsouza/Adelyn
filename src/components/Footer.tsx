@@ -1,15 +1,16 @@
 import Link from "next/link";
 
+// Clinic trades under Dr. Adelyn Pereira's name for now — no separate clinic
+// name yet. Add a `name` line here when one is confirmed.
 const clinic = {
-  name: "Dr. Adelyn Pereira — Physiotherapy",
   addressLines: [
     "Pereira Compound, Near Marve Beach",
     "Marve Road, Malad (West)",
-    "Mumbai 400095",
+    "Mumbai, Maharashtra 400095",
   ],
   phoneDisplay: "+91 99208 36637",
   phoneHref: "tel:+919920836637",
-  email: "adelynpereira@gmail.com",
+  email: "Adelynpereira@gmail.com",
 };
 
 const quickNav = [
@@ -122,10 +123,9 @@ export default function Footer() {
               Contact &amp; clinic
             </p>
             <address className="mt-4 flex flex-col gap-3 text-sm not-italic">
-              <span className="block">
-                {clinic.name}
+              <span className="block space-y-0.5">
                 {clinic.addressLines.map((line) => (
-                  <span key={line} className="mt-0.5 block text-zinc-400">
+                  <span key={line} className="block text-zinc-400">
                     {line}
                   </span>
                 ))}
