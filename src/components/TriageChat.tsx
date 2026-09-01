@@ -12,10 +12,10 @@ interface ChatMessage {
 }
 
 const QUICK_QUESTIONS = [
-  "What should I wear for my first session?",
-  "Do I need to bring my MRI or scan reports?",
-  "What happens during the first appointment?",
-  "How should I prepare for a virtual consultation?",
+  "What to wear?",
+  "Do I need an MRI report?",
+  "Clinic location & parking",
+  "Virtual appointment setup",
   "How do I reschedule or cancel?",
 ];
 
@@ -71,9 +71,14 @@ const RESPONSE_RULES: ResponseRule[] = [
       "It depends on the condition, but many patients notice meaningful change within 4–6 sessions. Dr. Adelyn will give you an estimated timeline after the first assessment.",
   },
   {
-    keywords: ["late", "arrive", "early", "parking", "directions"],
+    keywords: ["location", "parking", "directions", "address", "getting there", "map", "where is"],
     answer:
-      "Please arrive 10 minutes early; there is step-free access and on-site parking. If you are running late, call the clinic — sessions cannot always be extended if another patient follows.",
+      "The clinic is on the ground floor with step-free access and free on-site parking. The full address and a map link are in your confirmation email. Report to reception 10 minutes before your slot.",
+  },
+  {
+    keywords: ["late", "arrive", "early", "running late"],
+    answer:
+      "Please arrive 10 minutes early to check in. If you are running late, call the clinic — sessions cannot always be extended if another patient is booked after you.",
   },
 ];
 
