@@ -55,15 +55,27 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto bg-zinc-950 text-zinc-400">
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
+    <footer className="relative mt-auto overflow-hidden border-t border-t-white/10 bg-zinc-950 text-zinc-400">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-500/10 via-transparent to-transparent"
+      />
+      <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-20 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Clinical branding */}
           <div>
-            <p className="text-lg font-semibold text-teal-400">
-              Dr. Adelyn Pereira
-            </p>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-zinc-500">
+            <div className="flex items-center gap-2.5">
+              <span
+                aria-hidden="true"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-teal-600 text-sm font-bold text-white"
+              >
+                AP
+              </span>
+              <p className="text-lg font-semibold text-teal-400">
+                Dr. Adelyn Pereira
+              </p>
+            </div>
+            <p className="mt-2 text-xs font-medium uppercase tracking-wider text-zinc-500">
               Physiotherapy &amp; Rehabilitation
             </p>
             <p className="mt-4 text-sm leading-6">
