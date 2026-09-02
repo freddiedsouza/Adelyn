@@ -173,7 +173,16 @@ export default function Footer() {
       <div className="border-t border-zinc-800">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-4 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <p>&copy; {year} Dr. Adelyn Pereira. All rights reserved.</p>
-          <p>Clinical physiotherapy &amp; rehabilitation · Mumbai, India</p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-teal-400"
+            >
+              Privacy Policy
+            </Link>
+            <span aria-hidden="true">·</span>
+            <span>Clinical physiotherapy &amp; rehabilitation · Mumbai, India</span>
+          </div>
         </div>
       </div>
     </footer>

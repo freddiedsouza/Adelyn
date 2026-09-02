@@ -7,8 +7,16 @@
   the Edge middleware and Node route handlers.
 */
 
-/** Configure via the ADMIN_PASSCODE environment variable; this is the dev default. */
-const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE ?? "adelyn2026";
+/*
+  Configure via the ADMIN_PASSCODE environment variable.
+  In development it falls back to a well-known value for convenience.
+  In production, if ADMIN_PASSCODE is not set the passcode is empty and NO
+  login can succeed — a misconfigured deployment stays locked rather than
+  accepting a publicly known default.
+*/
+const ADMIN_PASSCODE =
+  process.env.ADMIN_PASSCODE ??
+  (process.env.NODE_ENV === "production" ? "" : "adelyn2026");
 
 const SESSION_MESSAGE = "adelyn-admin-session-v1";
 

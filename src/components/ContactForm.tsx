@@ -36,6 +36,8 @@ export default function ContactForm() {
   });
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [toastVisible, setToastVisible] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const toastTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(
@@ -70,17 +72,39 @@ export default function ContactForm() {
     return next;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const found = validate();
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
-    // Simulated send — no backend. Show a success toast and reset the form.
-    setValues({ name: "", phone: "", email: "", subject: "", message: "" });
-    setToastVisible(true);
-    if (toastTimeout.current) clearTimeout(toastTimeout.current);
-    toastTimeout.current = setTimeout(() => setToastVisible(false), 5000);
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if (!response.ok) {
+        const data = (await response.json()) as { error?: string };
+        setSubmitError(
+          data.error ?? "Could not send your message. Please try again.",
+        );
+        return;
+      }
+
+      setValues({ name: "", phone: "", email: "", subject: "", message: "" });
+      setToastVisible(true);
+      if (toastTimeout.current) clearTimeout(toastTimeout.current);
+      toastTimeout.current = setTimeout(() => setToastVisible(false), 5000);
+    } catch {
+      setSubmitError(
+        "Could not reach the message service. Check your connection and try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -195,12 +219,22 @@ export default function ContactForm() {
           <FieldError id="contact-message-error" message={errors.message} />
         </div>
 
+        {submitError ? (
+          <p
+            role="alert"
+            className="text-sm text-red-600 sm:col-span-2 dark:text-red-400"
+          >
+            {submitError}
+          </p>
+        ) : null}
+
         <div className="sm:col-span-2">
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-800 sm:w-auto"
+            disabled={submitting}
+            className="inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
           >
-            Send message
+            {submitting ? "Sending…" : "Send message"}
           </button>
         </div>
       </form>

@@ -5,6 +5,7 @@ import {
   getAllAppointments,
   type BookingInput,
 } from "@/lib/bookingStore";
+import { sendEmail } from "@/lib/notify";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,26 @@ export async function POST(request: Request) {
 
   try {
     const appointment = createAppointment(body as BookingInput);
+
+    // Stop-gap notification until bookings are stored in a database.
+    await sendEmail({
+      subject: `New booking ${appointment.id} — ${appointment.patientName}`,
+      replyTo: appointment.email,
+      text: [
+        `Reference:  ${appointment.id}`,
+        `Patient:    ${appointment.patientName}`,
+        `Phone:      ${appointment.phone}`,
+        `Email:      ${appointment.email}`,
+        `Service:    ${appointment.serviceTitle}`,
+        `Date:       ${appointment.date}`,
+        `Time:       ${appointment.time}`,
+        `Mode:       ${appointment.mode}`,
+        "",
+        `Chief complaint: ${appointment.chiefComplaint}`,
+        `Medical history: ${appointment.medicalHistory || "None provided"}`,
+      ].join("\n"),
+    });
+
     return NextResponse.json({ appointment }, { status: 201 });
   } catch (error) {
     if (error instanceof BookingValidationError) {

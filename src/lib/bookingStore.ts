@@ -48,9 +48,14 @@ const globalForStore = globalThis as unknown as {
   __adelynBookingStore?: StoreShape;
 };
 
+// Production starts empty; development is pre-populated with sample appointments
+// so the admin dashboard has something to show.
 const store: StoreShape =
   globalForStore.__adelynBookingStore ?? {
-    appointments: seedAppointments.map((appointment) => ({ ...appointment })),
+    appointments:
+      process.env.NODE_ENV === "production"
+        ? []
+        : seedAppointments.map((appointment) => ({ ...appointment })),
   };
 
 if (!globalForStore.__adelynBookingStore) {

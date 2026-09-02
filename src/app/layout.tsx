@@ -14,10 +14,35 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+const siteDescription =
+  "Clinical physiotherapy and rehabilitation with Dr. Adelyn Pereira — musculoskeletal care, post-surgical recovery, sports injury management, and virtual consultations in Malad (West), Mumbai.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Dr. Adelyn Pereira | Physiotherapy & Rehabilitation",
-  description:
-    "Clinical physiotherapy and rehabilitation with Dr. Adelyn Pereira — musculoskeletal care, post-surgical recovery, sports injury management, and virtual consultations.",
+  description: siteDescription,
+  openGraph: {
+    type: "website",
+    siteName: "Dr. Adelyn Pereira Physiotherapy",
+    title: "Dr. Adelyn Pereira | Physiotherapy & Rehabilitation",
+    description: siteDescription,
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Dr. Adelyn Pereira — Physiotherapy & Rehabilitation",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dr. Adelyn Pereira | Physiotherapy & Rehabilitation",
+    description: siteDescription,
+    images: ["/og.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const credentials = [
   "Doctor of Physiotherapy (DPT)",
   "Bachelor of Physiotherapy (BPT)",
-  "Registered Physiotherapist — Maharashtra State O.T. & P.T. Council, Reg. No. PT-00000",
+  "Registered Physiotherapist — Maharashtra State O.T. & P.T. Council",
   "Certified Dry Needling Practitioner (Level 2)",
   "Member, Indian Association of Physiotherapists (IAP)",
 ];
