@@ -18,12 +18,16 @@ export default function ServicesPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Header */}
-      <section className="w-full border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
-          <span className="inline-flex items-center rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:border-teal-800 dark:bg-teal-950 dark:text-teal-300">
+      <section className="relative w-full overflow-hidden border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-50/60 via-transparent to-transparent dark:from-teal-950/25"
+        />
+        <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-24 lg:px-8">
+          <span className="inline-flex items-center rounded-full border border-teal-200/80 bg-teal-50/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 ring-1 ring-teal-600/10 backdrop-blur-sm dark:border-teal-800/80 dark:bg-teal-950/60 dark:text-teal-300">
             Clinical Services
           </span>
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl dark:text-zinc-50">
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-balance text-zinc-900 sm:text-4xl lg:text-5xl dark:text-zinc-50">
             Clinical Services &amp; Rehabilitation
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
@@ -42,7 +46,7 @@ export default function ServicesPage() {
                 <li key={service.id}>
                   <a
                     href={`#${service.id}`}
-                    className="inline-block whitespace-nowrap rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:border-teal-600 hover:text-teal-700 dark:border-zinc-700 dark:text-zinc-200 dark:hover:text-teal-400"
+                    className="inline-block whitespace-nowrap rounded-full border border-zinc-300/80 bg-white/60 px-4 py-2 text-sm font-medium text-zinc-700 backdrop-blur-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-teal-600 hover:text-teal-700 dark:border-zinc-700/80 dark:bg-zinc-900/60 dark:text-zinc-200 dark:hover:text-teal-400"
                   >
                     {service.title}
                   </a>
@@ -54,13 +58,13 @@ export default function ServicesPage() {
       </section>
 
       {/* Service sections */}
-      <div className="w-full bg-zinc-50 dark:bg-zinc-950">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-12 lg:gap-12 lg:px-8 lg:py-16">
+      <div className="w-full bg-zinc-50/60 dark:bg-zinc-950">
+        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-16 md:py-24 lg:gap-12 lg:px-8">
           {services.map((service, index) => (
             <section
               key={service.id}
               id={service.id}
-              className="scroll-mt-24 rounded-2xl border border-zinc-200 bg-white p-6 sm:p-8 dark:border-zinc-800 dark:bg-zinc-900"
+              className="scroll-mt-24 rounded-2xl border border-zinc-200/80 bg-white/70 p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md transition-all duration-200 hover:border-teal-500/30 hover:shadow-[0_12px_30px_-6px_rgba(0,0,0,0.1)] sm:p-8 dark:border-zinc-800/80 dark:bg-zinc-900/70"
             >
               <div
                 className={`flex flex-col gap-8 md:gap-12 lg:flex-row ${
@@ -163,7 +167,7 @@ export default function ServicesPage() {
 
                     <Link
                       href={`/book?service=${service.id}`}
-                      className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-800"
+                      className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_20px_-4px_rgba(13,148,136,0.4)] transition-all duration-150 hover:-translate-y-0.5 hover:bg-teal-800 hover:shadow-[0_12px_30px_-6px_rgba(13,148,136,0.5)] active:translate-y-0 active:scale-[0.98]"
                     >
                       Book This Treatment
                     </Link>
@@ -178,7 +182,7 @@ export default function ServicesPage() {
       {/* Bottom CTA banner */}
       <section className="w-full border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
         <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
-          <div className="rounded-2xl border border-teal-200 bg-teal-50 p-6 sm:p-10 dark:border-teal-900 dark:bg-teal-950">
+          <div className="relative overflow-hidden rounded-3xl border border-teal-200/80 bg-gradient-to-br from-teal-50 to-white p-6 shadow-[0_10px_40px_-12px_rgba(13,148,136,0.25)] sm:p-10 dark:border-teal-900/80 dark:from-teal-950 dark:to-zinc-950">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
                 <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
@@ -194,7 +198,7 @@ export default function ServicesPage() {
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:shrink-0">
                 <Link
                   href="/book"
-                  className="inline-flex items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-800"
+                  className="inline-flex items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white shadow-[0_4px_20px_-4px_rgba(13,148,136,0.4)] transition-all duration-150 hover:-translate-y-0.5 hover:bg-teal-800 hover:shadow-[0_12px_30px_-6px_rgba(13,148,136,0.5)] active:translate-y-0 active:scale-[0.98]"
                 >
                   Book an initial consultation
                 </Link>

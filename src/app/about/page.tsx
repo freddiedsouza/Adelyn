@@ -70,19 +70,23 @@ export default function AboutPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Clinical profile header */}
-      <section className="w-full bg-white dark:bg-zinc-950">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-12 md:grid-cols-2 lg:gap-16 lg:px-8 lg:py-20">
+      <section className="relative w-full overflow-hidden bg-white dark:bg-zinc-950">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-50/50 via-transparent to-transparent dark:from-teal-950/20"
+        />
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24 lg:gap-16 lg:px-8">
           <div className="relative mx-auto w-full max-w-sm md:mx-0">
             <div
-              className="absolute -inset-3 rounded-3xl border border-teal-100 dark:border-teal-900"
               aria-hidden="true"
+              className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-teal-200/40 via-transparent to-teal-100/30 blur-2xl dark:from-teal-900/40 dark:to-teal-950/20"
             />
             {/*
               Portrait image. Shared with the homepage hero — replace
               public/clinic-portrait.jpg (4:5 portrait crop) to change it
               site-wide.
             */}
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border-2 border-teal-200 bg-zinc-100 ring-1 ring-inset ring-white dark:border-teal-800 dark:bg-zinc-900 dark:ring-zinc-800">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-zinc-200/80 bg-zinc-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] ring-1 ring-inset ring-white/60 dark:border-zinc-800/80 dark:bg-zinc-900 dark:ring-white/10">
               <Image
                 src="/clinic-portrait.jpg"
                 alt="Dr. Adelyn Pereira, clinical physiotherapist"
@@ -95,7 +99,7 @@ export default function AboutPage() {
           </div>
 
           <div className="text-center md:text-left">
-            <span className="inline-flex items-center rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:border-teal-800 dark:bg-teal-950 dark:text-teal-300">
+            <span className="inline-flex items-center rounded-full border border-teal-200/80 bg-teal-50/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 ring-1 ring-teal-600/10 backdrop-blur-sm dark:border-teal-800/80 dark:bg-teal-950/60 dark:text-teal-300">
               Clinical Profile
             </span>
             <h1 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl dark:text-zinc-50">
@@ -149,10 +153,10 @@ export default function AboutPage() {
       </section>
 
       {/* Public healthcare background */}
-      <section className="w-full border-t border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16 lg:px-8 lg:py-20">
+      <section className="w-full border-t border-zinc-200 bg-zinc-50/60 dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-16 md:py-24 lg:grid-cols-[1fr_1.2fr] lg:gap-16 lg:px-8">
           <div>
-            <span className="inline-flex items-center rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:border-teal-800 dark:bg-teal-950 dark:text-teal-300">
+            <span className="inline-flex items-center rounded-full border border-teal-200/80 bg-teal-50/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 ring-1 ring-teal-600/10 backdrop-blur-sm dark:border-teal-800/80 dark:bg-teal-950/60 dark:text-teal-300">
               Public Healthcare Background
             </span>
             <h2 className="mt-4 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
@@ -197,9 +201,9 @@ export default function AboutPage() {
 
       {/* Clinical philosophy */}
       <section className="w-full bg-white dark:bg-zinc-950">
-        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24 lg:px-8">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:border-teal-800 dark:bg-teal-950 dark:text-teal-300">
+            <span className="inline-flex items-center rounded-full border border-teal-200/80 bg-teal-50/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 ring-1 ring-teal-600/10 backdrop-blur-sm dark:border-teal-800/80 dark:bg-teal-950/60 dark:text-teal-300">
               Clinical Philosophy
             </span>
             <h2 className="mt-4 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
@@ -211,9 +215,9 @@ export default function AboutPage() {
             {pillars.map((pillar) => (
               <div
                 key={pillar.title}
-                className="flex flex-col rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900"
+                className="flex flex-col rounded-2xl border border-zinc-200/80 bg-white/70 p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-[0_12px_30px_-6px_rgba(0,0,0,0.1)] dark:border-zinc-800/80 dark:bg-zinc-900/70"
               >
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-teal-50 dark:bg-teal-950">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-teal-50 ring-1 ring-teal-600/10 dark:bg-teal-950/40">
                   <svg
                     className="h-6 w-6 text-teal-600 dark:text-teal-400"
                     fill="none"
@@ -242,10 +246,10 @@ export default function AboutPage() {
       </section>
 
       {/* Core competencies & techniques */}
-      <section className="w-full border-t border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-20">
+      <section className="w-full border-t border-zinc-200 bg-zinc-50/60 dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24 lg:px-8">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:border-teal-800 dark:bg-teal-950 dark:text-teal-300">
+            <span className="inline-flex items-center rounded-full border border-teal-200/80 bg-teal-50/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 ring-1 ring-teal-600/10 backdrop-blur-sm dark:border-teal-800/80 dark:bg-teal-950/60 dark:text-teal-300">
               Core Competencies &amp; Techniques
             </span>
             <h2 className="mt-4 text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
@@ -257,7 +261,7 @@ export default function AboutPage() {
             {competencies.map((item) => (
               <div
                 key={item}
-                className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm font-medium text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+                className="flex items-center gap-3 rounded-xl border border-zinc-200/80 bg-white/70 px-4 py-3 text-sm font-medium text-zinc-800 backdrop-blur-sm transition-colors hover:border-teal-500/40 dark:border-zinc-800/80 dark:bg-zinc-900/70 dark:text-zinc-100"
               >
                 <span className="inline-flex h-2 w-2 shrink-0 rounded-full bg-teal-600" />
                 {item}
@@ -268,7 +272,7 @@ export default function AboutPage() {
       </section>
 
       {/* Direct CTA banner */}
-      <section className="w-full bg-teal-700">
+      <section className="w-full bg-gradient-to-br from-teal-700 via-teal-700 to-teal-800">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-6 py-12 text-center lg:flex-row lg:justify-between lg:px-8 lg:py-14 lg:text-left">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
@@ -281,7 +285,7 @@ export default function AboutPage() {
           </div>
           <Link
             href="/book"
-            className="inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-50 sm:w-auto"
+            className="inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-teal-800 shadow-[0_10px_30px_-8px_rgba(0,0,0,0.3)] transition-all duration-150 hover:-translate-y-0.5 hover:bg-teal-50 active:translate-y-0 active:scale-[0.98] sm:w-auto"
           >
             Schedule a Consultation with Dr. Adelyn
           </Link>

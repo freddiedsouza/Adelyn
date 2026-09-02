@@ -82,9 +82,9 @@ function ContactCard({
       {...(external
         ? { target: "_blank", rel: "noopener noreferrer" }
         : {})}
-      className="flex flex-col items-start gap-3 rounded-2xl border border-zinc-200 bg-white p-5 transition-colors hover:border-teal-600 dark:border-zinc-800 dark:bg-zinc-900"
+      className="flex flex-col items-start gap-3 rounded-2xl border border-zinc-200/80 bg-white/70 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-[0_12px_30px_-6px_rgba(0,0,0,0.1)] dark:border-zinc-800/80 dark:bg-zinc-900/70"
     >
-      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400">
+      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-600 ring-1 ring-teal-600/10 dark:bg-teal-950/40 dark:text-teal-400">
         {children}
       </span>
       <span>
@@ -103,9 +103,13 @@ export default function ContactPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Header */}
-      <section className="w-full border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
-          <span className="inline-flex items-center rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:border-teal-800 dark:bg-teal-950 dark:text-teal-300">
+      <section className="relative w-full overflow-hidden border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-50/60 via-transparent to-transparent dark:from-teal-950/25"
+        />
+        <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-24 lg:px-8">
+          <span className="inline-flex items-center rounded-full border border-teal-200/80 bg-teal-50/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-700 ring-1 ring-teal-600/10 backdrop-blur-sm dark:border-teal-800/80 dark:bg-teal-950/60 dark:text-teal-300">
             Contact
           </span>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl dark:text-zinc-50">
@@ -123,8 +127,8 @@ export default function ContactPage() {
       </section>
 
       {/* Contact info & location */}
-      <section className="w-full bg-zinc-50 dark:bg-zinc-950">
-        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
+      <section className="w-full bg-zinc-50/60 dark:bg-zinc-950">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24 lg:px-8">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
             <div>
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -234,7 +238,7 @@ export default function ContactPage() {
 
             {/* Map placeholder */}
             <div className="flex flex-col">
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-zinc-200/80 bg-gradient-to-br from-zinc-100 to-white shadow-[0_10px_30px_-12px_rgba(0,0,0,0.15)] dark:border-zinc-800/80 dark:from-zinc-900 dark:to-zinc-950">
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center">
                   <svg
                     className="h-10 w-10 text-teal-600 dark:text-teal-400"
@@ -275,7 +279,7 @@ export default function ContactPage() {
 
       {/* FAQ */}
       <section className="w-full border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="mx-auto max-w-3xl px-6 py-12 lg:px-8 lg:py-16">
+        <div className="mx-auto max-w-3xl px-6 py-16 md:py-24 lg:px-8">
           <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
             Frequently asked questions
           </h2>
@@ -287,7 +291,7 @@ export default function ContactPage() {
 
       {/* Direct message form */}
       <section className="w-full border-t border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="mx-auto max-w-3xl px-6 py-12 lg:px-8 lg:py-16">
+        <div className="mx-auto max-w-3xl px-6 py-16 md:py-24 lg:px-8">
           <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
             Send a direct message
           </h2>
