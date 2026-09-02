@@ -51,7 +51,7 @@ export default function PrepGuide() {
   }
 
   return (
-    <section className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+    <section className="rounded-2xl border border-zinc-200/80 bg-white/70 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:p-6 dark:border-zinc-800/80 dark:bg-zinc-900/70">
       <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
         Resources & prep guide
       </h2>

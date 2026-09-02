@@ -83,7 +83,7 @@ function modeLabel(mode: ConsultationMode | ""): string {
 function inputClass(hasError: boolean): string {
   return [
     "w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-zinc-900 outline-none transition-colors",
-    "focus:ring-2 focus:ring-teal-600/30 dark:bg-zinc-900 dark:text-zinc-100",
+    "focus:ring-2 focus:ring-teal-500/20 dark:bg-zinc-900 dark:text-zinc-100",
     hasError
       ? "border-red-500 focus:border-red-500 focus:ring-red-500/30"
       : "border-zinc-300 focus:border-teal-600 dark:border-zinc-700",
@@ -309,7 +309,7 @@ export default function BookingForm() {
   if (confirmation) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 lg:px-8 lg:py-16">
-        <div className="rounded-2xl border border-zinc-200 bg-white p-6 sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-zinc-200/80 bg-white/70 p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:p-8 dark:border-zinc-800/80 dark:bg-zinc-900/70">
           <div className="flex items-center gap-3">
             <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-950">
               <svg
@@ -448,7 +448,7 @@ export default function BookingForm() {
         {/* Intake form */}
         <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
           {/* Step 1 — Service */}
-          <fieldset className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          <fieldset className="rounded-2xl border border-zinc-200/80 bg-white/70 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:p-6 dark:border-zinc-800/80 dark:bg-zinc-900/70">
             <StepHeading step={1} title="Select a service" />
             <div
               role="radiogroup"
@@ -597,7 +597,7 @@ export default function BookingForm() {
           </fieldset>
 
           {/* Step 2 — Consultation mode */}
-          <fieldset className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          <fieldset className="rounded-2xl border border-zinc-200/80 bg-white/70 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:p-6 dark:border-zinc-800/80 dark:bg-zinc-900/70">
             <StepHeading step={2} title="Choose a consultation mode" />
             <div
               role="radiogroup"
@@ -667,7 +667,7 @@ export default function BookingForm() {
           </fieldset>
 
           {/* Step 3 — Date & slot */}
-          <fieldset className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          <fieldset className="rounded-2xl border border-zinc-200/80 bg-white/70 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:p-6 dark:border-zinc-800/80 dark:bg-zinc-900/70">
             <StepHeading step={3} title="Pick a date and time slot" />
             <div className="flex flex-col gap-2">
               <label
@@ -798,7 +798,7 @@ export default function BookingForm() {
           </fieldset>
 
           {/* Step 4 — Patient details */}
-          <fieldset className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          <fieldset className="rounded-2xl border border-zinc-200/80 bg-white/70 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:p-6 dark:border-zinc-800/80 dark:bg-zinc-900/70">
             <StepHeading
               step={4}
               title="Patient details & medical intake"
@@ -943,7 +943,7 @@ export default function BookingForm() {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+            className="inline-flex w-full items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white shadow-[0_4px_20px_-4px_rgba(13,148,136,0.4)] transition-all duration-150 hover:-translate-y-0.5 hover:bg-teal-800 hover:shadow-[0_12px_30px_-6px_rgba(13,148,136,0.5)] active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
           >
             {submitting ? "Submitting…" : "Request Appointment"}
           </button>
@@ -951,7 +951,7 @@ export default function BookingForm() {
 
         {/* Live appointment summary */}
         <aside className="md:sticky md:top-24 md:h-fit">
-          <div className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="rounded-2xl border border-zinc-200/80 bg-white/70 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:p-6 dark:border-zinc-800/80 dark:bg-zinc-900/70">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
               Appointment summary
             </h2>

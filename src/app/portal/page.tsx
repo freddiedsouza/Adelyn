@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 
 export default function PortalPage() {
   return (
-    <main className="flex flex-1 flex-col bg-zinc-50 dark:bg-zinc-950">
+    <main className="relative flex flex-1 flex-col overflow-hidden bg-zinc-50/60 dark:bg-zinc-950">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-50/50 via-transparent to-transparent dark:from-teal-950/20" />
       <div className="mx-auto w-full max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
         <div className="max-w-2xl">
           <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50">

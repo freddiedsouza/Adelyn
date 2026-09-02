@@ -166,7 +166,7 @@ export default function AdminScheduleTable() {
       ) : null}
 
       {/* Filters */}
-      <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 sm:flex-row sm:flex-wrap sm:items-end dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex flex-col gap-3 rounded-xl border border-zinc-200/80 bg-white/70 p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:flex-row sm:flex-wrap sm:items-end dark:border-zinc-800/80 dark:bg-zinc-900/70">
         <div className="flex flex-1 flex-col gap-1.5 sm:min-w-[220px]">
           <label
             htmlFor="admin-search"
@@ -180,7 +180,7 @@ export default function AdminScheduleTable() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Patient name or reference"
-            className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/30 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+            className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
           />
         </div>
 
@@ -197,7 +197,7 @@ export default function AdminScheduleTable() {
             onChange={(event) =>
               setStatusFilter(event.target.value as AppointmentStatus | "all")
             }
-            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/30 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
           >
             <option value="all">All statuses</option>
             {STATUS_OPTIONS.map((option) => (
@@ -220,7 +220,7 @@ export default function AdminScheduleTable() {
             type="date"
             value={dateFilter}
             onChange={(event) => setDateFilter(event.target.value)}
-            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/30 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
           />
         </div>
 

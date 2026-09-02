@@ -10,7 +10,7 @@ type Field = "name" | "phone" | "email" | "subject" | "message";
 function inputClass(hasError: boolean): string {
   return [
     "w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-zinc-900 outline-none transition-colors",
-    "focus:ring-2 focus:ring-teal-600/30 dark:bg-zinc-950 dark:text-zinc-100",
+    "focus:ring-2 focus:ring-teal-500/20 dark:bg-zinc-950 dark:text-zinc-100",
     hasError
       ? "border-red-500 focus:border-red-500 focus:ring-red-500/30"
       : "border-zinc-300 focus:border-teal-600 dark:border-zinc-700",

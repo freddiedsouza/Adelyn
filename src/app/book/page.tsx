@@ -23,7 +23,8 @@ function BookingFormFallback() {
 
 export default function BookPage() {
   return (
-    <main className="flex flex-1 flex-col bg-zinc-50 dark:bg-zinc-950">
+    <main className="relative flex flex-1 flex-col overflow-hidden bg-zinc-50/60 dark:bg-zinc-950">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-50/50 via-transparent to-transparent dark:from-teal-950/20" />
       <Suspense fallback={<BookingFormFallback />}>
         <BookingForm />
       </Suspense>

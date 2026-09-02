@@ -84,7 +84,7 @@ export default function BookingLookup() {
   }
 
   return (
-    <section className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+    <section className="rounded-2xl border border-zinc-200/80 bg-white/70 p-5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md sm:p-6 dark:border-zinc-800/80 dark:bg-zinc-900/70">
       <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
         Quick booking lookup
       </h2>
@@ -114,7 +114,7 @@ export default function BookingLookup() {
             aria-invalid={Boolean(error)}
             aria-describedby={error ? "lookup-error" : undefined}
             className={[
-              "w-full rounded-lg border bg-white px-3 py-2.5 text-sm uppercase tracking-wide text-zinc-900 outline-none transition-colors placeholder:normal-case placeholder:tracking-normal focus:ring-2 focus:ring-teal-600/30 dark:bg-zinc-950 dark:text-zinc-100",
+              "w-full rounded-lg border bg-white px-3 py-2.5 text-sm uppercase tracking-wide text-zinc-900 outline-none transition-colors placeholder:normal-case placeholder:tracking-normal focus:ring-2 focus:ring-teal-500/20 dark:bg-zinc-950 dark:text-zinc-100",
               error
                 ? "border-red-500 focus:border-red-500 focus:ring-red-500/30"
                 : "border-zinc-300 focus:border-teal-600 dark:border-zinc-700",

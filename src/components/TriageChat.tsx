@@ -155,7 +155,7 @@ export default function TriageChat() {
   }
 
   return (
-    <section className="flex h-[520px] flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white md:h-[640px] dark:border-zinc-800 dark:bg-zinc-900">
+    <section className="flex h-[520px] flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/70 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md md:h-[640px] dark:border-zinc-800/80 dark:bg-zinc-900/70">
       <header className="border-b border-zinc-200 px-5 py-4 dark:border-zinc-800">
         <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
           Pre-consultation chat
@@ -234,7 +234,7 @@ export default function TriageChat() {
           onChange={(event) => setInput(event.target.value)}
           placeholder="Type your question…"
           autoComplete="off"
-          className="min-w-0 flex-1 rounded-full border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none transition-colors focus:border-teal-600 focus:ring-2 focus:ring-teal-600/30 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+          className="min-w-0 flex-1 rounded-full border border-zinc-300 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none transition-colors focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
         />
         <button
           type="submit"
