@@ -79,12 +79,12 @@ export default function AboutPage() {
             />
             {/*
               Portrait image. Shared with the homepage hero — replace
-              public/adelyn-portrait.jpg (4:5 portrait crop) to change it
+              public/clinic-portrait.jpg (4:5 portrait crop) to change it
               site-wide.
             */}
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border-2 border-teal-200 bg-zinc-100 ring-1 ring-inset ring-white dark:border-teal-800 dark:bg-zinc-900 dark:ring-zinc-800">
               <Image
-                src="/adelyn-portrait.jpg"
+                src="/clinic-portrait.jpg"
                 alt="Dr. Adelyn Pereira, clinical physiotherapist"
                 fill
                 priority
