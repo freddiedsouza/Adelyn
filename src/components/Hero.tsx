@@ -40,7 +40,7 @@ export default function Hero() {
             Physiotherapy &amp; Clinical Rehabilitation
           </span>
 
-          <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl dark:text-zinc-50">
+          <h1 className="mt-6 max-w-xl text-2xl font-semibold leading-snug tracking-tight text-balance text-zinc-900 sm:text-3xl lg:text-4xl dark:text-zinc-50">
             Restoring mobility, relieving pain, and delivering evidence-based
             clinical therapy.
           </h1>
